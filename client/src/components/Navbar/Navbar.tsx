@@ -1,24 +1,15 @@
 import React from 'react';
+import './Navbar.css';
 
 export const Navbar: React.FC = () => {
   return (
-    <header>
-      <ul>
-        <li>
-          <a href="#">home icon</a>
-        </li>
-        <li>
-          <a href="#">action</a>
-        </li>
-        <li>
-          <a href="#">comedy</a>
-        </li>
-        <li>
-          <a href="#">drama</a>
-        </li>
-        <li>
-          <a href="#">horror</a>
-        </li>
+    <header className="navbar">
+      <ul className="navbar-list">
+        <li className="navbar-list__item">home icon</li>
+        <li className="navbar-list__item">action</li>
+        <li className="navbar-list__item">comedy</li>
+        <li className="navbar-list__item">drama</li>
+        <li className="navbar-list__item">horror</li>
       </ul>
     </header>
   );

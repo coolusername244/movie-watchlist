@@ -1,0 +1,19 @@
+.navbar {
+  padding: 2em;
+  background-color: #1c2373;
+  color: white;
+}
+
+.navbar-list {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.navbar-list__item {
+  list-style-type: none;
+  text-transform: uppercase;
+}
+
+.navbar-list__item:hover {
+  font-weight: bold;
+}
