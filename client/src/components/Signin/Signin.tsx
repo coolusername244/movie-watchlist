@@ -1,4 +1,4 @@
-import React, { FormEvent, useRef } from 'react';
+import React, { FormEvent, useRef, useState } from 'react';
 import './Signin.css';
 import axios from 'axios';
 
@@ -10,6 +10,8 @@ export const Signin: React.FC<SigninProps> = ({
   handleSetUsername,
   handleGoToHomePage,
 }) => {
+  const [error, setError] = useState('');
+
   const usernameRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = async (e: FormEvent) => {
@@ -17,13 +19,15 @@ export const Signin: React.FC<SigninProps> = ({
     const username = usernameRef.current?.value;
     if (!username) return;
     try {
-      await axios.post('http://localhost:8000/api/users', {
-        username,
+      const response = await axios.get('http://localhost:8000/api/users', {
+        params: { username: username },
       });
+      console.log(response);
       handleSetUsername(username);
       handleGoToHomePage();
     } catch (error) {
-      console.log(error);
+      setError(error.response.data.error);
+      console.log(error.response.data.error);
     }
   };
 
@@ -38,6 +42,7 @@ export const Signin: React.FC<SigninProps> = ({
           placeholder="Username"
         />
         <input className="signin-form__button" type="submit" value="Sign In" />
+        {error && <p>{error}</p>}
       </form>
     </section>
   );

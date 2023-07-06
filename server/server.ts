@@ -74,6 +74,27 @@ app.post('/api/users', async (req, res) => {
       res.status(201).send();
     }
   } catch (error) {
+    res.status(500).json({ error: 'something went wrong' });
+  } finally {
+    client.release();
+  }
+});
+
+app.get('/api/users', async (req, res) => {
+  const username = req.query.username;
+  console.log(username);
+  const client = await pool.connect();
+  try {
+    const exists = await client.query(
+      'SELECT * FROM users WHERE username = $1',
+      [username],
+    );
+    if (exists.rows.length > 0) {
+      res.status(200).send();
+    } else {
+      res.status(400).json({ error: 'user does not exist' });
+    }
+  } catch (error) {
     res.status(500).send({ error: 'something went wrong' });
   } finally {
     client.release();
