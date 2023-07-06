@@ -1,0 +1,13 @@
+.movie-thumbnail {
+  margin: 1em;
+}
+
+.movie-thumbnail__img {
+  width: 10em;
+  border-radius: 0.6em;
+  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.4);
+}
+
+.movie-thumbnail__title {
+  text-align: center;
+}

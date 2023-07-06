@@ -1,0 +1,13 @@
+.movie-board {
+  border: solid 1px black;
+  margin: 2em;
+}
+
+.movie-board__heading {
+  padding: 1em 0 0 1em;
+}
+
+.movie-carousel {
+  display: flex;
+  overflow-x: scroll;
+}
