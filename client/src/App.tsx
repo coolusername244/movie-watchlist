@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Navbar } from './components/Navbar/Navbar';
 import { Searchbar } from './components/Searchbar/Searchbar';
 import { MovieCarousel } from './components/MovieCarousel/MovieCarousel';
+import { Signin } from './components/Signin/Signin';
 import { Footer } from './components/Footer/Footer';
 import axios from 'axios';
 import './App.css';
@@ -1046,6 +1047,15 @@ const App: React.FC = () => {
     useState<Movie[]>(newReleases);
   const [topRatedMovies, setTopRatedMovies] = useState<Movie[]>(topRated);
   const [upcomingMovies, setUpcomingMovies] = useState<Movie[]>(upcoming);
+  const [signInPage, setSignInPage] = useState(false);
+
+  const handleSignInPage = () => {
+    setSignInPage(true);
+  };
+
+  const handleGoToHomePage = () => {
+    setSignInPage(false);
+  };
 
   // useEffect(() => {
   //   const fetchMovies = async () => {
@@ -1075,13 +1085,20 @@ const App: React.FC = () => {
 
   return (
     <>
-      <Navbar />
-      <Searchbar />
-      <MovieCarousel
-        topRatedMovies={topRatedMovies}
-        newReleasedMovies={newReleasedMovies}
-        upcomingMovies={upcomingMovies}
+      <Navbar
+        handleSignInPage={handleSignInPage}
+        handleGoToHomePage={handleGoToHomePage}
       />
+      {!signInPage && <Searchbar />}
+      {!signInPage && (
+        <MovieCarousel
+          topRatedMovies={topRatedMovies}
+          newReleasedMovies={newReleasedMovies}
+          upcomingMovies={upcomingMovies}
+        />
+      )}
+      {signInPage && <Signin />}
+
       <Footer />
     </>
   );
