@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, ChangeEvent } from 'react';
 import { Navbar } from './components/Navbar/Navbar';
 import { Searchbar } from './components/Searchbar/Searchbar';
 import { MovieCarousel } from './components/MovieCarousel/MovieCarousel';
@@ -1048,6 +1048,7 @@ const App: React.FC = () => {
   const [topRatedMovies, setTopRatedMovies] = useState<Movie[]>(topRated);
   const [upcomingMovies, setUpcomingMovies] = useState<Movie[]>(upcoming);
   const [signInPage, setSignInPage] = useState(false);
+  const [username, setUsername] = useState('');
 
   const handleSignInPage = () => {
     setSignInPage(true);
@@ -1055,6 +1056,10 @@ const App: React.FC = () => {
 
   const handleGoToHomePage = () => {
     setSignInPage(false);
+  };
+
+  const handleSetUsername = (username: string) => {
+    setUsername(username);
   };
 
   // useEffect(() => {
@@ -1088,6 +1093,7 @@ const App: React.FC = () => {
       <Navbar
         handleSignInPage={handleSignInPage}
         handleGoToHomePage={handleGoToHomePage}
+        username={username}
       />
       {!signInPage && <Searchbar />}
       {!signInPage && (
@@ -1097,7 +1103,12 @@ const App: React.FC = () => {
           upcomingMovies={upcomingMovies}
         />
       )}
-      {signInPage && <Signin />}
+      {signInPage && (
+        <Signin
+          handleSetUsername={handleSetUsername}
+          handleGoToHomePage={handleGoToHomePage}
+        />
+      )}
 
       <Footer />
     </>

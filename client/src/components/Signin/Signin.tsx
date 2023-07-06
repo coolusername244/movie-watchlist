@@ -1,11 +1,37 @@
-import React from 'react';
+import React, { FormEvent, useRef } from 'react';
 import './Signin.css';
+import axios from 'axios';
 
-export const Signin = () => {
+type SigninProps = {
+  handleSetUsername: (username: string) => void;
+  handleGoToHomePage: () => void;
+};
+export const Signin: React.FC<SigninProps> = ({
+  handleSetUsername,
+  handleGoToHomePage,
+}) => {
+  const usernameRef = useRef<HTMLInputElement>(null);
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    const username = usernameRef.current?.value;
+    if (!username) return;
+    try {
+      await axios.post('http://localhost:8000/api/users', {
+        username,
+      });
+      handleSetUsername(username);
+      handleGoToHomePage();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <section className="signin-section">
-      <form className="signin-form" action="">
+      <form onSubmit={handleSubmit} className="signin-form" action="">
         <input
+          ref={usernameRef}
           className="signin-form__input"
           type="text"
           placeholder="Username"
