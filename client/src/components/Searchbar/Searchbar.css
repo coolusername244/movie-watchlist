@@ -1,0 +1,26 @@
+.searchbar-section {
+  display: flex;
+  justify-content: center;
+}
+
+/* .search-section__form {
+  width: 100%;
+  margin-top: 1em;
+  
+} */
+
+.search-section__form {
+  /* margin: 1em 0; */
+  width: 40%;
+  /* height: 2em; */
+  margin: 2em 0;
+}
+
+.searchbar {
+  width: 100%;
+  height: 2.5em;
+  text-indent: 0.75em;
+  border: solid black 1px;
+  font-size: 1.2em;
+  border-radius: 0.6em;
+}
