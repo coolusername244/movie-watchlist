@@ -3,6 +3,7 @@ import { Navbar } from './components/Navbar/Navbar';
 import { Searchbar } from './components/Searchbar/Searchbar';
 import { MovieCarousel } from './components/MovieCarousel/MovieCarousel';
 import { Signin } from './components/Signin/Signin';
+import { Signup } from './components/Signup/Signup';
 import { Footer } from './components/Footer/Footer';
 import axios from 'axios';
 import './App.css';
@@ -1048,14 +1049,26 @@ const App: React.FC = () => {
   const [topRatedMovies, setTopRatedMovies] = useState<Movie[]>(topRated);
   const [upcomingMovies, setUpcomingMovies] = useState<Movie[]>(upcoming);
   const [signInPage, setSignInPage] = useState(false);
+  const [signUpPage, setSignUpPage] = useState(false);
   const [username, setUsername] = useState('');
+
+  const handleSignUpPage = () => {
+    setSignUpPage(true);
+    setSignInPage(false);
+  };
 
   const handleSignInPage = () => {
     setSignInPage(true);
+    setSignUpPage(false);
+  };
+
+  const handleSignOut = () => {
+    setUsername('');
   };
 
   const handleGoToHomePage = () => {
     setSignInPage(false);
+    setSignUpPage(false);
   };
 
   const handleSetUsername = (username: string) => {
@@ -1092,11 +1105,13 @@ const App: React.FC = () => {
     <>
       <Navbar
         handleSignInPage={handleSignInPage}
+        handleSignUpPage={handleSignUpPage}
         handleGoToHomePage={handleGoToHomePage}
+        handleSignOut={handleSignOut}
         username={username}
       />
-      {!signInPage && <Searchbar />}
-      {!signInPage && (
+      {!signInPage && !signUpPage && <Searchbar />}
+      {!signInPage && !signUpPage && (
         <MovieCarousel
           topRatedMovies={topRatedMovies}
           newReleasedMovies={newReleasedMovies}
@@ -1105,6 +1120,12 @@ const App: React.FC = () => {
       )}
       {signInPage && (
         <Signin
+          handleSetUsername={handleSetUsername}
+          handleGoToHomePage={handleGoToHomePage}
+        />
+      )}
+      {signUpPage && (
+        <Signup
           handleSetUsername={handleSetUsername}
           handleGoToHomePage={handleGoToHomePage}
         />

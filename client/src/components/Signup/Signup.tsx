@@ -1,15 +1,16 @@
-import React, { FormEvent, useRef } from 'react';
-import './Signin.css';
+import React, { FormEvent, useRef, useState } from 'react';
+import './Signup.css';
 import axios from 'axios';
 
-type SigninProps = {
+type SignupProps = {
   handleSetUsername: (username: string) => void;
   handleGoToHomePage: () => void;
 };
-export const Signin: React.FC<SigninProps> = ({
+export const Signup: React.FC<SignupProps> = ({
   handleSetUsername,
   handleGoToHomePage,
 }) => {
+  const [error, setError] = useState('');
   const usernameRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = async (e: FormEvent) => {
@@ -17,20 +18,22 @@ export const Signin: React.FC<SigninProps> = ({
     const username = usernameRef.current?.value;
     if (!username) return;
     try {
-      await axios.post('http://localhost:8000/api/users', {
+      const response = await axios.post('http://localhost:8000/api/users', {
         username,
       });
+      console.log(response);
       handleSetUsername(username);
       handleGoToHomePage();
     } catch (error) {
-      console.log(error);
+      setError(error.response.data.error);
+      console.log(error.response.data.error);
     }
   };
 
   return (
     <section className="signin-section">
       <form onSubmit={handleSubmit} className="signin-form" action="">
-        <h2>Sign In</h2>
+        <h2>Sign Up</h2>
         <input
           ref={usernameRef}
           className="signin-form__input"
@@ -38,6 +41,7 @@ export const Signin: React.FC<SigninProps> = ({
           placeholder="Username"
         />
         <input className="signin-form__button" type="submit" value="Sign In" />
+        {error && <p>{error}</p>}
       </form>
     </section>
   );

@@ -58,10 +58,26 @@ app.get('/api/upcoming', async (_req, res) => {
 
 app.post('/api/users', async (req, res) => {
   const username = req.body.username;
+  console.log(username);
   const client = await pool.connect();
-  await client.query('INSERT INTO users (username) VALUES ($1)', [username]);
-  client.release();
-  res.status(201).send();
+  try {
+    const exists = await client.query(
+      'SELECT * FROM users WHERE username = $1',
+      [username],
+    );
+    if (exists.rows.length > 0) {
+      res.status(400).json({ error: 'user already exists' });
+    } else {
+      await client.query('INSERT INTO users (username) VALUES ($1)', [
+        username,
+      ]);
+      res.status(201).send();
+    }
+  } catch (error) {
+    res.status(500).send({ error: 'something went wrong' });
+  } finally {
+    client.release();
+  }
 });
 
 app.listen(port, () => console.log(`Server running on port ${port}`));

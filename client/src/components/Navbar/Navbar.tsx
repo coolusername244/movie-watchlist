@@ -4,6 +4,8 @@ import './Navbar.css';
 type NavbarProps = {
   handleSignInPage: () => void;
   handleGoToHomePage: () => void;
+  handleSignUpPage: () => void;
+  handleSignOut: () => void;
   username: string;
 };
 
@@ -11,6 +13,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   handleSignInPage,
   handleGoToHomePage,
   username,
+  handleSignUpPage,
+  handleSignOut,
 }) => {
   return (
     <header className="navbar">
@@ -23,11 +27,20 @@ export const Navbar: React.FC<NavbarProps> = ({
         <li className="navbar-list__item">drama</li>
         <li className="navbar-list__item">horror</li>
         {!username && (
-          <li onClick={handleSignInPage} className="navbar-list__item">
-            Sign In
+          <>
+            <li onClick={handleSignInPage} className="navbar-list__item">
+              Sign In
+            </li>
+            <li onClick={handleSignUpPage} className="navbar-list__item">
+              Sign Up
+            </li>
+          </>
+        )}
+        {username && (
+          <li onClick={handleSignOut} className="navbar-list__item">
+            Sign Out
           </li>
         )}
-        {username && <li className="navbar-list__item">Sign Out</li>}
       </ul>
     </header>
   );

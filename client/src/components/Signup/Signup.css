@@ -1,0 +1,33 @@
+.signin-section {
+  display: flex;
+  justify-content: center;
+  margin-top: 3em;
+}
+
+.signin-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: solid black 1px;
+  border-radius: 0.6em;
+  padding: 2em;
+  width: 40%;
+  justify-self: center;
+  background-color: #a0b8e7;
+}
+
+.signin-form__input {
+  width: 60%;
+  margin-bottom: 2em;
+  border-radius: 0.6em;
+  border: solid black 1px;
+  height: 2.5em;
+  text-indent: 1em;
+}
+
+.signin-form__button {
+  width: 30%;
+  border-radius: 0.6em;
+  border: solid black 1px;
+  height: 2em;
+}
