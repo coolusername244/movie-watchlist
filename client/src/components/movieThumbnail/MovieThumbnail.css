@@ -6,8 +6,17 @@
   width: 10em;
   border-radius: 0.6em;
   box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.4);
+  transition: 0.2s;
+}
+
+.movie-thumbnail__img:hover {
+  transform: translate(0, -0.75em);
+  cursor: pointer;
 }
 
 .movie-thumbnail__title {
   text-align: center;
+  margin-top: 0.5em;
+  cursor: pointer;
+  transition: 0.2s;
 }

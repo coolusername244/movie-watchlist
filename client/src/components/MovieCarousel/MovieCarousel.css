@@ -1,6 +1,9 @@
 .movie-board {
   border: solid 1px black;
   margin: 2em;
+  background-color: #a0b8e7;
+  color: black;
+  border-radius: 0.6em;
 }
 
 .movie-board__heading {
