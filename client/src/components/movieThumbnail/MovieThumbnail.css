@@ -1,5 +1,6 @@
 .movie-thumbnail {
   margin: 1em;
+  position: relative;
 }
 
 .movie-thumbnail__img {
@@ -9,7 +10,27 @@
   transition: 0.2s;
 }
 
-.movie-thumbnail__img:hover {
+.movie-thumbnail__button {
+  position: absolute;
+  z-index: 1000;
+  top: 0;
+  right: 0;
+  border: solid red 2px;
+  border-radius: 0.6em;
+  padding: 0.3em;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  opacity: 0;
+  transition: 0.2s;
+}
+
+.movie-thumbnail:hover .movie-thumbnail__img {
+  transform: translate(0, -0.75em);
+  cursor: pointer;
+}
+
+.movie-thumbnail:hover .movie-thumbnail__button {
+  opacity: 1;
   transform: translate(0, -0.75em);
   cursor: pointer;
 }

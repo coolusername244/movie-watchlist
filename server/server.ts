@@ -101,4 +101,15 @@ app.get('/api/users', async (req, res) => {
   }
 });
 
+app.get('/api/movie', async (req, res) => {
+  const query = req.query.query;
+  console.log(query);
+  const response = await axios.get(
+    `https://api.themoviedb.org/3/search/movie?query=${query}&include_adult=false&language=en-US&page=1`,
+    options,
+  );
+  console.log(response);
+  res.json(response.data.results);
+});
+
 app.listen(port, () => console.log(`Server running on port ${port}`));

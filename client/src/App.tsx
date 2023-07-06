@@ -1051,6 +1051,8 @@ const App: React.FC = () => {
   const [signInPage, setSignInPage] = useState(false);
   const [signUpPage, setSignUpPage] = useState(false);
   const [username, setUsername] = useState('');
+  const [queryResult, setQueryResult] = useState<Movie[]>([]);
+  const [queryString, setQueryString] = useState('');
 
   const handleSignUpPage = () => {
     setSignUpPage(true);
@@ -1064,6 +1066,7 @@ const App: React.FC = () => {
 
   const handleSignOut = () => {
     setUsername('');
+    localStorage.removeItem('username');
   };
 
   const handleGoToHomePage = () => {
@@ -1073,7 +1076,21 @@ const App: React.FC = () => {
 
   const handleSetUsername = (username: string) => {
     setUsername(username);
+    localStorage.setItem('username', username);
   };
+
+  const handleSetQuery = (query: Movie[], queryString: string) => {
+    setQueryResult(query);
+    setQueryString(queryString);
+    console.log(query);
+  };
+
+  useEffect(() => {
+    const user = localStorage.getItem('username');
+    if (user) {
+      setUsername(user);
+    }
+  }, []);
 
   // useEffect(() => {
   //   const fetchMovies = async () => {
@@ -1110,12 +1127,17 @@ const App: React.FC = () => {
         handleSignOut={handleSignOut}
         username={username}
       />
-      {!signInPage && !signUpPage && <Searchbar />}
+      {!signInPage && !signUpPage && (
+        <Searchbar handleSetQuery={handleSetQuery} />
+      )}
       {!signInPage && !signUpPage && (
         <MovieCarousel
           topRatedMovies={topRatedMovies}
           newReleasedMovies={newReleasedMovies}
           upcomingMovies={upcomingMovies}
+          username={username}
+          queryResult={queryResult}
+          queryString={queryString}
         />
       )}
       {signInPage && (

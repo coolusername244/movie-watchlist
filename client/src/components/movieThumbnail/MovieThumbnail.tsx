@@ -7,9 +7,13 @@ interface Movie {
 }
 interface MovieThumbnailProps {
   movie: Movie;
+  username: string;
 }
 
-export const MovieThumbnail: React.FC<MovieThumbnailProps> = ({ movie }) => {
+export const MovieThumbnail: React.FC<MovieThumbnailProps> = ({
+  movie,
+  username,
+}) => {
   const movieImageUrl = `https://image.tmdb.org/t/p/w500/${movie.poster_path}`;
   return (
     <article className="movie-thumbnail">
@@ -18,6 +22,9 @@ export const MovieThumbnail: React.FC<MovieThumbnailProps> = ({ movie }) => {
         src={movieImageUrl}
         alt={movie.title}
       />
+      {username && (
+        <button className="movie-thumbnail__button">+ Watchlist</button>
+      )}
       <h4 className="movie-thumbnail__title">{movie.title}</h4>
     </article>
   );
