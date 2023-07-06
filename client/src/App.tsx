@@ -1,10 +1,19 @@
-import './App.css'
+import React from 'react';
+import { Navbar } from './components/Navbar/Navbar';
+import { Searchbar } from './components/Searchbar/Searchbar';
+import { MovieThumbnail } from './components/movieThumbnail/MovieThumbnail';
+import { Footer } from './components/Footer/Footer';
+import './App.css';
 
-function App() {
-
+const App: React.FC = () => {
   return (
-    <h1>Lets Begin</h1>
-  )
-}
+    <>
+      <Navbar />
+      <Searchbar />
+      <MovieThumbnail />
+      <Footer />
+    </>
+  );
+};
 
-export default App
+export default App;
