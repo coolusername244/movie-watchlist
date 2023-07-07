@@ -7,6 +7,8 @@ type NavbarProps = {
   handleSignUpPage: () => void;
   handleSignOut: () => void;
   username: string;
+  handleWatchlist: () => void;
+  getUsersWatchlist: () => void;
 };
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -15,17 +17,18 @@ export const Navbar: React.FC<NavbarProps> = ({
   username,
   handleSignUpPage,
   handleSignOut,
+  handleWatchlist,
 }) => {
   return (
     <header className="navbar">
       <ul className="navbar-list">
         <li onClick={handleGoToHomePage} className="navbar-list__item">
-          home icon
+          home
         </li>
-        <li className="navbar-list__item">action</li>
+        {/* <li className="navbar-list__item">action</li>
         <li className="navbar-list__item">comedy</li>
         <li className="navbar-list__item">drama</li>
-        <li className="navbar-list__item">horror</li>
+        <li className="navbar-list__item">horror</li> */}
         {!username && (
           <>
             <li onClick={handleSignInPage} className="navbar-list__item">
@@ -37,9 +40,14 @@ export const Navbar: React.FC<NavbarProps> = ({
           </>
         )}
         {username && (
-          <li onClick={handleSignOut} className="navbar-list__item">
-            Sign Out
-          </li>
+          <>
+            <li onClick={handleWatchlist} className="navbar-list__item">
+              watchlist
+            </li>
+            <li onClick={handleSignOut} className="navbar-list__item">
+              Sign Out
+            </li>
+          </>
         )}
       </ul>
     </header>

@@ -3,6 +3,7 @@ import './Searchbar.css';
 import axios from 'axios';
 
 interface Movie {
+  id: number;
   title: string;
   overview: string;
   poster_path: string;
@@ -10,8 +11,12 @@ interface Movie {
 
 type SeachbarProps = {
   handleSetQuery: (query: Movie[], queryString: string) => void;
+  username: string;
 };
-export const Searchbar: React.FC<SeachbarProps> = ({ handleSetQuery }) => {
+export const Searchbar: React.FC<SeachbarProps> = ({
+  handleSetQuery,
+  username,
+}) => {
   const [error, setError] = useState('');
 
   const queryStringRef = useRef<HTMLInputElement>(null);
@@ -46,6 +51,7 @@ export const Searchbar: React.FC<SeachbarProps> = ({ handleSetQuery }) => {
           placeholder="What would you like to watch?"
         />
         {error && <p>No such movie</p>}
+        {!username && <p>Log in to add a movie to watchlist</p>}
       </form>
     </section>
   );

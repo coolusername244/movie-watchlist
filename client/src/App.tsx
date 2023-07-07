@@ -8,6 +8,7 @@ import { Footer } from './components/Footer/Footer';
 import axios from 'axios';
 import './App.css';
 interface Movie {
+  id: number;
   title: string;
   overview: string;
   poster_path: string;
@@ -1053,25 +1054,47 @@ const App: React.FC = () => {
   const [username, setUsername] = useState('');
   const [queryResult, setQueryResult] = useState<Movie[]>([]);
   const [queryString, setQueryString] = useState('');
+  const [watchlistPage, setWatchlistPage] = useState(false);
+  const [watchlist, setWatchlist] = useState<Movie[]>([]);
+  const [error, setError] = useState('');
+
+  const handleWatchlist = async () => {
+    setWatchlistPage(true);
+    try {
+      const response = await axios.get('http://localhost:8000/api/watchlist', {
+        params: {
+          username: username,
+        },
+      });
+      setWatchlist(response.data.rows);
+    } catch (error) {
+      console.log(error);
+      setError(error.response.data.error);
+    }
+  };
 
   const handleSignUpPage = () => {
     setSignUpPage(true);
     setSignInPage(false);
   };
 
-  const handleSignInPage = () => {
+  const handleSignInPage = async () => {
     setSignInPage(true);
     setSignUpPage(false);
   };
 
   const handleSignOut = () => {
     setUsername('');
+    setWatchlistPage(false);
+    setQueryResult([]);
+    setQueryString('');
     localStorage.removeItem('username');
   };
 
   const handleGoToHomePage = () => {
     setSignInPage(false);
     setSignUpPage(false);
+    setWatchlistPage(false);
   };
 
   const handleSetUsername = (username: string) => {
@@ -1084,6 +1107,39 @@ const App: React.FC = () => {
     setQueryString(queryString);
     console.log(query);
   };
+
+  const handleSetWatchlist = async (movie: Movie) => {
+    if (watchlist.some(item => item.id === movie.id)) {
+      try {
+        await axios.delete('http://localhost:8000/api/watchlist', {
+          params: {
+            movieId: movie.id,
+          },
+        });
+        setWatchlist(prev => prev.filter(item => item.id !== movie.id));
+      } catch (error) {
+        console.log(error);
+        setError(error.response.data.error);
+      }
+    } else {
+      try {
+        await axios.post('http://localhost:8000/api/watchlist', {
+          movie,
+          username,
+        });
+        setWatchlist(prev => [...prev, movie]);
+      } catch (error) {
+        console.log(error);
+        setError(error.response.data.error);
+      }
+    }
+  };
+
+  const getUsersWatchlist = async () => {};
+
+  useEffect(() => {
+    console.log(watchlist);
+  }, [watchlist]);
 
   useEffect(() => {
     const user = localStorage.getItem('username');
@@ -1126,9 +1182,11 @@ const App: React.FC = () => {
         handleGoToHomePage={handleGoToHomePage}
         handleSignOut={handleSignOut}
         username={username}
+        handleWatchlist={handleWatchlist}
+        getUsersWatchlist={getUsersWatchlist}
       />
-      {!signInPage && !signUpPage && (
-        <Searchbar handleSetQuery={handleSetQuery} />
+      {!signInPage && !signUpPage && !watchlistPage && (
+        <Searchbar handleSetQuery={handleSetQuery} username={username} />
       )}
       {!signInPage && !signUpPage && (
         <MovieCarousel
@@ -1138,6 +1196,9 @@ const App: React.FC = () => {
           username={username}
           queryResult={queryResult}
           queryString={queryString}
+          handleSetWatchlist={handleSetWatchlist}
+          watchlistPage={watchlistPage}
+          watchlist={watchlist}
         />
       )}
       {signInPage && (

@@ -101,6 +101,73 @@ app.get('/api/users', async (req, res) => {
   }
 });
 
+app.post('/api/watchlist', async (req, res) => {
+  const movie = req.body.movie;
+  const username = req.body.username;
+  console.log(movie);
+  console.log(username);
+  const client = await pool.connect();
+  try {
+    const exists = await client.query(
+      'SELECT * FROM watchlist WHERE movie_id = $1',
+      [movie.id],
+    );
+    if (exists.rows.length > 0) {
+      res.status(400).json({ error: 'user already exists' });
+    } else {
+      await client.query(
+        'INSERT INTO watchlist (movie_id, watched, liked, title, poster_path, username) VALUES ($1, $2, $3, $4, $5, $6);',
+        [movie.id, false, false, movie.title, movie.poster_path, username],
+      );
+      console.log('sucess');
+      res.status(201).send();
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'something went wrong' });
+  } finally {
+    client.release();
+  }
+});
+
+app.delete('/api/watchlist', async (req, res) => {
+  const movie = req.query.movieId;
+  console.log(movie);
+  const client = await pool.connect();
+  try {
+    console.log('here');
+    const result = await client.query('DELETE FROM watchlist WHERE id = $1', [
+      movie,
+    ]);
+    console.log(result);
+    if (result.rowCount === 0) {
+      res.status(400).json({ error: 'Movie not found in the watchlist' });
+    } else {
+      res.status(200).send();
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Something went wrong' });
+  } finally {
+    client.release();
+  }
+});
+
+app.get('/api/watchlist', async (req, res) => {
+  const username = req.query.username;
+  console.log(username);
+  const client = await pool.connect();
+  try {
+    const result = await client.query(
+      'SELECT * FROM watchlist WHERE username = $1',
+      [username],
+    );
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ error: 'Something went wrong' });
+  } finally {
+    client.release();
+  }
+});
+
 app.get('/api/movie', async (req, res) => {
   const query = req.query.query;
   console.log(query);

@@ -40,4 +40,9 @@
   margin-top: 0.5em;
   cursor: pointer;
   transition: 0.2s;
+  width: 10em;
+}
+
+.movie-thumbnail__id {
+  display: none;
 }
